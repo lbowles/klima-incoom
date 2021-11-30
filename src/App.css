@@ -1,5 +1,9 @@
 .App {
   text-align: center;
+  color: #ffffff;
+  font-style: normal;
+  font-weight: normal;
+  width: 100%;
 }
 
 .App-logo {
@@ -28,11 +32,75 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+h1 {
+  font-weight: bold;
+  font-size: 64px;
+  line-height: 75px;
+}
+
+h2 {
+  margin: 0;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 23px;
+}
+
+h3 {
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 21px;
+}
+
+h4 {
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
+
+.card {
+  width: 400px;
+  background: #404040;
+  border: 1px solid #747474;
+  border-radius: 5px;
+  box-sizing: border-box;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+  margin: 0 auto;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.card2 {
+  border-radius: 5px;
+  background: #494949;
+  display: flex;
+  text-align: left;
+  position: relative;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top: 10px;
+}
+
+.cardInner {
+  display: block;
+  text-align: left;
+  position: relative;
+  padding: 20px;
+  margin-top: 24px;
+  justify-content: left;
+}
+
+.text {
+  display: flex;
+  padding-bottom: 10px;
+}
+
+.footer {
+  padding-top: 60px;
+}
+
+a {
+  color: aquamarine;
 }

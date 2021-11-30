@@ -1,0 +1,34 @@
+.input2 {
+  background: #494949;
+  border-radius: 5px;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 19px;
+  color: #fff;
+  border: none;
+  text-align: center;
+  width: 60px;
+  height: 30px;
+  display: inline-block;
+  margin-left: 0px;
+  margin-right: 10px;
+}
+
+.customStats {
+  padding-top: 20px;
+  text-align: left;
+  justify-content: left;
+  display: flex;
+}
+
+textarea:focus,
+input:focus {
+  outline: solid 1px #4db069;
+  border-radius: 5px;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
