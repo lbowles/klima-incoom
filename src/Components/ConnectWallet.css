@@ -1,0 +1,15 @@
+.metamaskBtn {
+  width: 400px;
+  height: 40px;
+  margin-bottom: 24px;
+  color: #888888;
+  background: #3b3b3b;
+  border: 2px solid #3b3b3b;
+  box-sizing: border-box;
+  border-radius: 5px;
+  transition-duration: 0.2s;
+}
+.metamaskBtn:hover {
+  border: 1px solid #fff;
+  color: #fff;
+}

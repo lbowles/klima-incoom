@@ -11,7 +11,12 @@
   justify-content: center;
   margin-left: -5px;
   margin-right: -1px;
+  color: black;
+  transition-duration: 0.2s;
+}
+.searchCard:hover {
   color: #fff;
+  border: 1px solid #fff;
 }
 
 input {
