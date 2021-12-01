@@ -2,7 +2,7 @@ import CustomStats from "./CustomStats"
 
 const MainStats = () => {
     return (
-        <div className="card cardInner">
+        <div className="card cardInner" >
             <div className="text" >
                 <h2>Current Balance:</h2> 
                 <h2 style={{color: "#23AA31"}}>&nbsp;390</h2>

@@ -37,3 +37,8 @@ input:focus {
   outline: solid 1px #4db069;
   border-radius: 5px;
 }
+
+.showConnectedWallet {
+  color: #888888;
+  font-size: 14px;
+}
