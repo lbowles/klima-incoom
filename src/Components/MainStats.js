@@ -1,6 +1,6 @@
 import CustomStats from "./CustomStats"
 
-const MainStats = () => {
+const MainStats = ({APY}) => {
     return (
         <div className="card cardInner" >
             <div className="text" >
@@ -9,7 +9,7 @@ const MainStats = () => {
             </div>
             <div className="text" >           
                 <h2>Current APY:</h2>
-                <h2 style={{color: "#4DB069"}}>&nbsp;39800%</h2>
+                <h2 style={{color: "#4DB069"}}>&nbsp;{APY}%</h2>
             </div> 
             <div className="text" >           
                 <h2>5 Day ROI:</h2>
