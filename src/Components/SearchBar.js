@@ -20,9 +20,8 @@ const SearchBar = ({onChange, connectedWallet, showConnectedMeta}) => {
 
     let showWalletComp;
     if(showConnectedMeta) {
-        const cutConnected = connectedWallet
         showWalletComp = <div className="card showConnectedWallet" style={{height: "40px"}} >
-            {cutConnected}
+            {connectedWallet}
         </div>
         
     } else {
