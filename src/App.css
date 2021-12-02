@@ -71,6 +71,12 @@ h4 {
   align-items: center;
   display: flex;
   justify-content: center;
+  transition-duration: 0.2s;
+}
+.card:hover {
+  border: 1px solid #525252;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4);
+  transform: translateY(-1px);
 }
 
 .card2 {
