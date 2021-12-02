@@ -6,6 +6,7 @@ import ConnectWallet from './Components/ConnectWallet';
 import Web3 from 'web3'
 import { useState } from "react"
 import './App.css';
+import helpers from './helpers'
 
 
 function App() {
@@ -17,7 +18,9 @@ function App() {
   const [fiveDayROI, setFiveDayROI]= useState("")
   const [balances, setBalances]= useState([])
   const [epochReward,setEpochReward] = useState("")
+  const [rebaseTime,setRebaseTime] = useState("")
   const [dailyReward, setDailyReward]= useState([])
+
 
 
   const web3 = new Web3(window.ethereum);
@@ -84,6 +87,7 @@ function App() {
     setFetchedStakingAPY(stakingAPY)
     setFiveDayROI(fiveDayROI)
     setAllBalances(stakingAPY,tempAddress,stakingRebase)
+    timeNextRebase()
     return stakingAPY
   }
 
@@ -111,6 +115,16 @@ function App() {
     return balance * Math.pow(1+rebasePerEpoch, days*3)
   }
 
+  const timeNextRebase = async() => {
+    const currentBlock = await web3.eth.getBlockNumber()
+    const stakingContract = new web3.eth.Contract(stakingABI, stakingAddress);
+    const epoch = await stakingContract.methods.epoch().call();
+    const rebaseBlock = epoch.endBlock
+    console.log(rebaseBlock,currentBlock)
+    const seconds = helpers.secondsUntilBlock(currentBlock, rebaseBlock)
+    setRebaseTime(helpers.prettifySeconds(seconds))
+  }
+
   let connectBtn 
   if (showConnectedAcc) {
     connectBtn = ""
@@ -124,9 +138,8 @@ function App() {
       {connectBtn}
       <SearchBar connectedWallet={address} onChange={onChange} showConnectedMeta={showConnectedAcc} />
       <MainStats APY={fetchedStakingAPY} fiveDayROI={fiveDayROI} balances={balances} dailyReward={dailyReward} epochReward={epochReward}/>
-      <RebaseAleart />
+      <RebaseAleart time={rebaseTime}/>
       <Footer /> 
-      <button onClick={getAPY}>fetchIt</button>
     </div>
   );
 }
