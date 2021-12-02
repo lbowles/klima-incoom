@@ -10,9 +10,8 @@ import helpers from './helpers'
 
 
 function App() {
-  const onChange = () => {
-  }
   const [showConnectedAcc, setShowConnectedAcc ] = useState(false)
+  const [showConnectedManualAcc, setShowConnectedManualAcc ] = useState(false)
   const [address, setAddress]= useState("")
   const [fetchedStakingAPY, setFetchedStakingAPY]= useState("")
   const [fiveDayROI, setFiveDayROI]= useState("")
@@ -20,9 +19,6 @@ function App() {
   const [epochReward,setEpochReward] = useState("")
   const [rebaseTime,setRebaseTime] = useState("")
   const [dailyReward, setDailyReward]= useState([])
-
-
-
   const web3 = new Web3(window.ethereum);
   const stakingABI = require("./ABI/KlimaStaking.json")
   const sKlimaABI = require("./ABI/sKlima.json")
@@ -32,6 +28,7 @@ function App() {
   const connectWallet = async () => {
     if (window.ethereum) { //check if Metamask is installed
           try {
+              setShowConnectedManualAcc(false)
               const connectedAddress = await window.ethereum.enable(); //connect Metamask
               await setAddress(connectedAddress[0])
               getAPY(connectedAddress[0])
@@ -125,6 +122,20 @@ function App() {
     setRebaseTime(helpers.prettifySeconds(seconds))
   }
 
+  const connectWalletManual = async (address) => {
+    try {
+      const sKlimaContract = new web3.eth.Contract(sKlimaABI, sKlima);
+      const baseBalance = await sKlimaContract.methods.balanceOf(address).call({from:address}) / (Math.pow(10, 9))
+      console.log(baseBalance)
+      getAPY(address)
+      setShowConnectedAcc(false)
+      setShowConnectedManualAcc(true)
+      setAddress(address)
+      } catch (error) {
+        alert("Invalid address or 0 staked Klima")
+      }
+  }
+
   let connectBtn 
   if (showConnectedAcc) {
     connectBtn = ""
@@ -136,7 +147,7 @@ function App() {
     <div className="App">
       <h1>Klima Incoom </h1>
       {connectBtn}
-      <SearchBar connectedWallet={address} onChange={onChange} showConnectedMeta={showConnectedAcc} />
+      <SearchBar connectedWallet={address} showConnectedMeta={showConnectedAcc} connectWalletManual={connectWalletManual}/>
       <MainStats APY={fetchedStakingAPY} fiveDayROI={fiveDayROI} balances={balances} dailyReward={dailyReward} epochReward={epochReward}/>
       <RebaseAleart time={rebaseTime}/>
       <Footer /> 

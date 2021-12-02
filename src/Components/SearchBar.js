@@ -1,17 +1,14 @@
 import { useState } from "react"
 import { FaSearch } from "react-icons/fa"
-import PropTypes from "prop-types"
-
 import './SearchBar.css'
 
-const SearchBar = ({onChange, connectedWallet, showConnectedMeta}) => {
+const SearchBar = ({ connectedWallet, showConnectedMeta,connectWalletManual}) => {
     const [showSearch, setShowSearch]= useState(false)
     const [inputText, setInputText]= useState("")
       
     const checkShowSearch = (e) => {
-        onChange()
         setInputText(e.target.value)
-        if (inputText.length>3){
+        if (e.target.value.length>3){
             setShowSearch(true)
         } else {
             setShowSearch(false) 
@@ -19,13 +16,18 @@ const SearchBar = ({onChange, connectedWallet, showConnectedMeta}) => {
     }
 
     let showWalletComp;
-    if(showConnectedMeta) {
+    if(showConnectedMeta ) {
         showWalletComp = <div className="card showConnectedWallet" style={{height: "40px"}} >
             {connectedWallet}
         </div>
         
     } else {
-        showWalletComp = <div className={`card ${showSearch ? "cardSearch" : ""}`} style={{height: "40px"}} ><input placeholder="30xb12......." onChange={checkShowSearch} value={inputText}/>{showSearch && <button className="searchCard"><FaSearch /></button>}</div>
+        showWalletComp = <div className={`card ${showSearch ? "cardSearch" : ""}`} style={{height: "40px"}} >
+            {showSearch ? <input placeholder="30xb12......." onChange={checkShowSearch}  value={inputText} className="inputSearch"/> : 
+                <input placeholder="30xb12......." onChange={checkShowSearch} value={inputText}/>
+            }
+            {showSearch && <button className="searchCard" onClick={()=>connectWalletManual(inputText)}><FaSearch /></button>}
+        </div>
     }
 
     return ( 
@@ -35,9 +37,5 @@ const SearchBar = ({onChange, connectedWallet, showConnectedMeta}) => {
     )
 }
 
-SearchBar.propTypes = {
-    connectedWallet: PropTypes.string,
-    onChange: PropTypes.func,
-}
 
 export default SearchBar
