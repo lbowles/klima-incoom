@@ -11,7 +11,7 @@ import helpers from './helpers'
 
 function App() {
   const [showConnectedAcc, setShowConnectedAcc ] = useState(false)
-  const [showConnectedManualAcc, setShowConnectedManualAcc ] = useState(false)
+  const [metamaskInstalled, setMetamaskInstalled] = useState(false)
   const [address, setAddress]= useState("")
   const [fetchedStakingAPY, setFetchedStakingAPY]= useState("")
   const [fiveDayROI, setFiveDayROI]= useState("")
@@ -24,11 +24,17 @@ function App() {
   const sKlimaABI = require("./ABI/sKlima.json")
   const stakingAddress = "0x25d28a24ceb6f81015bb0b2007d795acac411b4d"
   const sKlima = "0xb0C22d8D350C67420f06F48936654f567C73E8C8"
+  
+  
+  window.onload = () => {
+    if (window.ethereum) {
+      setMetamaskInstalled(true)
+    }
+  };
 
   const connectWallet = async () => {
     if (window.ethereum) { //check if Metamask is installed
           try {
-              setShowConnectedManualAcc(false)
               const connectedAddress = await window.ethereum.enable(); //connect Metamask
               await setAddress(connectedAddress[0])
               getAPY(connectedAddress[0])
@@ -39,6 +45,16 @@ function App() {
                   }
                  // window.localStorage.setItem("userAddress",connectedAddress[0])
                   setShowConnectedAcc(true)
+                  window.ethereum.on("accountsChanged", accounts => {
+                    if (accounts.length > 0) {
+                      console.log("Metamask Connected")
+                    } 
+                    else {
+                      console.log("Metamask Disconnected")
+                      setShowConnectedAcc(false)
+                      setAddress("");
+                    }
+                });
                   return obj;
           } catch (error) {
               console.log("account disconnected")
@@ -52,18 +68,11 @@ function App() {
               connectedStatus: false,
               status: "🦊 You must install Metamask into your browser: https://metamask.io/download.html"
           }
-        } 
+        }
+     
   };
-  window.ethereum.on("accountsChanged", accounts => {
-      if (accounts.length > 0) {
-        console.log("Metamask Connected")
-      } 
-      else {
-        console.log("Metamask Disconnected")
-        setShowConnectedAcc(false)
-        setAddress("");
-      }
-  });
+
+
 
 
   const getAPY = async (tempAddress) => {
@@ -122,6 +131,12 @@ function App() {
     setRebaseTime(helpers.prettifySeconds(seconds))
   }
 
+  const getENSAddress = async () => {
+    //const web3 = await getWeb3ForNetwork('1')
+    //var fetchedAddress = web3.ens.getAddress('alice.eth');
+    //console.log(fetchedAddress)
+
+  }
   const connectWalletManual = async (address) => {
     try {
       const sKlimaContract = new web3.eth.Contract(sKlimaABI, sKlima);
@@ -129,7 +144,6 @@ function App() {
       console.log(baseBalance)
       getAPY(address)
       setShowConnectedAcc(false)
-      setShowConnectedManualAcc(true)
       setAddress(address)
       } catch (error) {
         alert("Invalid address or 0 staked Klima")
@@ -137,7 +151,7 @@ function App() {
   }
 
   let connectBtn 
-  if (showConnectedAcc) {
+  if (showConnectedAcc || !metamaskInstalled) {
     connectBtn = ""
   } else {
     connectBtn = <ConnectWallet clicked={connectWallet} onClicked={getAPY}/>
