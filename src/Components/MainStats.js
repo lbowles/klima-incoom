@@ -16,7 +16,7 @@ const MainStats = ({APY,fiveDayROI,balances,dailyReward,epochReward}) => {
                 <h2 style={{color: "#4DB09F"}}>&nbsp;{fiveDayROI}%</h2>
             </div> 
             <div className="card2" >
-                <div style={{width: "35%"}}>
+                <div style={{width: "34%"}}>
                     <h3><u>Duration</u></h3>
                     <h4>🌳 1 Week</h4>
                     <h4>🌳 2 Weeks</h4>
@@ -32,7 +32,7 @@ const MainStats = ({APY,fiveDayROI,balances,dailyReward,epochReward}) => {
                     <h4>{balances[4]}</h4>
                     <h4>{balances[5]}</h4>
                 </div>
-                <div style={{width: "33%"}}>
+                <div style={{width: "36%"}}>
                     <h3><u>Daily Reward</u></h3>
                     <h4>{dailyReward[0]}</h4>
                     <h4>{dailyReward[1]}</h4>
