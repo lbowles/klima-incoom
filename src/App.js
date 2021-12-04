@@ -96,7 +96,11 @@ function App() {
 
   const setAllBalances = async (APY,tempAddress,stakingRebase) => {
     const sKlimaContract = new ethers.Contract(sKlima, sKlimaABI, provider);
-    const baseBalance = await sKlimaContract.balanceOf(tempAddress) / (Math.pow(10, 9))
+    var baseBalance = await sKlimaContract.balanceOf(tempAddress) / (Math.pow(10, 9))
+    const fsKlimaContract = new ethers.Contract("0x535e3f59afb1de1a5694d5840224f964d53f7688", sKlimaABI, provider)
+    const fsBaseBalance = await fsKlimaContract.balanceOf(tempAddress) / (Math.pow(10, 9))
+    console.log("s"+baseBalance+" fs"+fsBaseBalance)
+    baseBalance = baseBalance+fsBaseBalance 
     let arrBalances = Array() ; 
       arrBalances[0] = baseBalance.toFixed(2)
       
@@ -139,12 +143,11 @@ function App() {
       console.log("baseBalance")
       const sKlimaContract = new ethers.Contract( sKlima,sKlimaABI, provider);
       const baseBalance = await sKlimaContract.balanceOf(address) / (Math.pow(10, 9))
-      console.log(baseBalance)
       getAPY(address)
       setShowConnectedAcc(false)
       setAddress(address)
       } catch (error) {
-        alert("Invalid address or 0 staked Klima")
+        alert("Invalid address or 0 sKlima/fsKlima")
       }
   }
 
