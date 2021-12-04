@@ -5,6 +5,13 @@
   font-weight: normal;
   width: 100%;
   transition-duration: 0.2s;
+  min-width: 400px;
+}
+
+@media (max-width: 420px) {
+  .App {
+    zoom: 0.85;
+  }
 }
 
 .App-logo {
