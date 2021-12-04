@@ -3,7 +3,7 @@ import MainStats from './Components/MainStats';
 import RebaseAleart from './Components/RebaseAleart';
 import Footer from './Components/Footer';
 import ConnectWallet from './Components/ConnectWallet';
-import Web3 from 'web3'
+import { ethers } from 'ethers';
 import { useState } from "react"
 import './App.css';
 import helpers from './helpers'
@@ -19,7 +19,7 @@ function App() {
   const [epochReward,setEpochReward] = useState("")
   const [rebaseTime,setRebaseTime] = useState("")
   const [dailyReward, setDailyReward]= useState([])
-  const web3 = new Web3(window.ethereum);
+  const provider = new ethers.providers.JsonRpcProvider("https://polygon-rpc.com")
   const stakingABI = require("./ABI/KlimaStaking.json")
   const sKlimaABI = require("./ABI/sKlima.json")
   const stakingAddress = "0x25d28a24ceb6f81015bb0b2007d795acac411b4d"
@@ -72,18 +72,15 @@ function App() {
      
   };
 
-
-
-
   const getAPY = async (tempAddress) => {
-    const sKlimaContract = new web3.eth.Contract(sKlimaABI, sKlima);
-    const stakingContract = new web3.eth.Contract(stakingABI, stakingAddress)
+    const sKlimaContract = new ethers.Contract(sKlima,sKlimaABI, provider);
+    const stakingContract = new ethers.Contract(stakingAddress, stakingABI, provider)
 
     //Staking Stats
-    const epoch = await stakingContract.methods.epoch().call()
+    const epoch = await stakingContract.epoch()
     const stakingReward = epoch.distribute;
-    const excess = await sKlimaContract.methods.balanceOf(stakingAddress).call()
-    const totalSupply = await sKlimaContract.methods.totalSupply().call()
+    const excess = await sKlimaContract.balanceOf(stakingAddress)
+    const totalSupply = await sKlimaContract.totalSupply()
     const circulation = totalSupply - excess
     const stakingRebase = stakingReward / circulation;
     const fiveDayROI = ((Math.pow(1 + stakingRebase, 5 * 3) - 1)*100).toFixed(2);
@@ -98,8 +95,8 @@ function App() {
   }
 
   const setAllBalances = async (APY,tempAddress,stakingRebase) => {
-    const sKlimaContract = new web3.eth.Contract(sKlimaABI, sKlima);
-    const baseBalance = await sKlimaContract.methods.balanceOf(tempAddress).call({from:address}) / (Math.pow(10, 9))
+    const sKlimaContract = new ethers.Contract(sKlima, sKlimaABI, provider);
+    const baseBalance = await sKlimaContract.balanceOf(tempAddress) / (Math.pow(10, 9))
     let arrBalances = Array() ; 
       arrBalances[0] = baseBalance.toFixed(2)
       
@@ -122,9 +119,9 @@ function App() {
   }
 
   const timeNextRebase = async() => {
-    const currentBlock = await web3.eth.getBlockNumber()
-    const stakingContract = new web3.eth.Contract(stakingABI, stakingAddress);
-    const epoch = await stakingContract.methods.epoch().call();
+    const currentBlock = await provider.getBlockNumber()
+    const stakingContract = new ethers.Contract(stakingAddress, stakingABI, provider);
+    const epoch = await stakingContract.epoch() 
     const rebaseBlock = epoch.endBlock
     console.log(rebaseBlock,currentBlock)
     const seconds = helpers.secondsUntilBlock(currentBlock, rebaseBlock)
@@ -139,8 +136,9 @@ function App() {
   }
   const connectWalletManual = async (address) => {
     try {
-      const sKlimaContract = new web3.eth.Contract(sKlimaABI, sKlima);
-      const baseBalance = await sKlimaContract.methods.balanceOf(address).call({from:address}) / (Math.pow(10, 9))
+      console.log("baseBalance")
+      const sKlimaContract = new ethers.Contract( sKlima,sKlimaABI, provider);
+      const baseBalance = await sKlimaContract.balanceOf(address) / (Math.pow(10, 9))
       console.log(baseBalance)
       getAPY(address)
       setShowConnectedAcc(false)
