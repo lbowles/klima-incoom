@@ -20,7 +20,7 @@ const MainStats = ({APY,fiveDayROI,balances,dailyReward,epochReward,tokens}) => 
                 </div>
                 <div style={{width:"11%"}} className="right">
                     <h5 className={`${tokens[0] && "white"}`}>sKlima {tokens[0]}</h5>
-                    <h5 className={`${tokens[1] && "white"}`}>wKlima</h5>
+                    <h5 className={`${tokens[1] && "white"}`}>wsKlima</h5>
                 </div>
             </div> 
             <div className="card2" >

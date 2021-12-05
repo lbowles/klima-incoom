@@ -12,4 +12,5 @@
 .metamaskBtn:hover {
   border: 1px solid #fff;
   color: #fff;
+  transform: translateY(-2px);
 }
