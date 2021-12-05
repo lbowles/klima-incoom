@@ -149,23 +149,29 @@ function App() {
     setRebaseTime(helpers.prettifySeconds(seconds))
   }
 
-  const getENSAddress = async () => {
-    //const web3 = await getWeb3ForNetwork('1')
-    //var fetchedAddress = web3.ens.getAddress('alice.eth');
-    //console.log(fetchedAddress)
-
-  }
   const connectWalletManual = async (address) => {
+    const pEthMainNet = new ethers.getDefaultProvider()
+    const resolver = await pEthMainNet.getResolver(address);
+    var ensAddress = ""
+    if (resolver) {
+      ensAddress = await resolver.getAddress()
+      console.log(ensAddress)
+    }
+
     try {
-      console.log("baseBalance")
       const sKlimaContract = new ethers.Contract( sKlima,sKlimaABI, provider);
-      const baseBalance = await sKlimaContract.balanceOf(address) / (Math.pow(10, 9))
-      console.log(baseBalance)
-      getAPY(address)
+      if (ensAddress) {
+        const baseBalance = await sKlimaContract.balanceOf(ensAddress)
+        getAPY(ensAddress)
+        setAddress(ensAddress)
+      } else {
+        const baseBalance = await sKlimaContract.balanceOf(address)
+        getAPY(address)
+        setAddress(address)
+      }
       setShowConnectedAcc(false)
-      setAddress(address)
       } catch (error) {
-        alert("Invalid address or 0 staked Klima")
+        alert("Invalid address")
       }
   }
 
