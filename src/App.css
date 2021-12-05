@@ -67,6 +67,24 @@ h4 {
   margin-bottom: 0px;
 }
 
+h5 {
+  font-weight: normal;
+  color: #6f6f6f;
+  font-size: 12px;
+  line-height: 14px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+li {
+  font-weight: normal;
+  color: #6f6f6f;
+  font-size: 12px;
+  line-height: 14px;
+}
+.white {
+  color: white;
+}
+
 .card {
   width: 400px;
   background: #404040;

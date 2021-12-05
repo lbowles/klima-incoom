@@ -1,19 +1,27 @@
 import CustomStats from "./CustomStats"
 
-const MainStats = ({APY,fiveDayROI,balances,dailyReward,epochReward}) => {
+const MainStats = ({APY,fiveDayROI,balances,dailyReward,epochReward,tokens}) => {
     return (
         <div className="card cardInner" >
-            <div className="text" >
-                <h2>Current Balance:</h2> 
-                <h2 style={{color: "#23AA31"}}>&nbsp;{balances[0]}</h2>
-            </div>
-            <div className="text" >           
-                <h2>Current APY:</h2>
-                <h2 style={{color: "#4DB069"}}>&nbsp;{APY}%</h2>
-            </div> 
-            <div className="text" >           
-                <h2>5 Day ROI:</h2>
-                <h2 style={{color: "#4DB09F"}}>&nbsp;{fiveDayROI}%</h2>
+            <div style={{display:"flex"}}>
+                <div style={{width:"89%"}}>
+                    <div className="text" >
+                        <h2>Current Balance:</h2> 
+                        <h2 style={{color: "#23AA31"}}>&nbsp;{balances[0]}</h2>
+                    </div>
+                    <div className="text" >           
+                        <h2>Current APY:</h2>
+                        <h2 style={{color: "#4DB069"}}>&nbsp;{APY}%</h2>
+                    </div> 
+                    <div className="text" >           
+                        <h2>5 Day ROI:</h2>
+                        <h2 style={{color: "#4DB09F"}}>&nbsp;{fiveDayROI}%</h2>
+                    </div>
+                </div>
+                <div style={{width:"11%"}} className="right">
+                    <h5 className={`${tokens[0] && "white"}`}>sKlima {tokens[0]}</h5>
+                    <h5 className={`${tokens[1] && "white"}`}>wKlima</h5>
+                </div>
             </div> 
             <div className="card2" >
                 <div style={{width: "34%"}}>

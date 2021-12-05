@@ -19,11 +19,15 @@ function App() {
   const [epochReward,setEpochReward] = useState("")
   const [rebaseTime,setRebaseTime] = useState("")
   const [dailyReward, setDailyReward]= useState([])
+  const [tokens, setTokens]= useState([])
   const provider = new ethers.providers.JsonRpcProvider("https://polygon-rpc.com")
   const stakingABI = require("./ABI/KlimaStaking.json")
   const sKlimaABI = require("./ABI/sKlima.json")
+  const wsKlimaABI = require("./ABI/wsKlima.json")
   const stakingAddress = "0x25d28a24ceb6f81015bb0b2007d795acac411b4d"
   const sKlima = "0xb0C22d8D350C67420f06F48936654f567C73E8C8"
+  const wsKlima = "0x6f370dba99E32A3cAD959b341120DB3C9E280bA6"
+  const fsKlima = "0x535e3F59Afb1De1a5694D5840224F964d53f7688"
   
   
   window.onload = () => {
@@ -96,7 +100,24 @@ function App() {
 
   const setAllBalances = async (APY,tempAddress,stakingRebase) => {
     const sKlimaContract = new ethers.Contract(sKlima, sKlimaABI, provider);
-    const baseBalance = await sKlimaContract.balanceOf(tempAddress) / (Math.pow(10, 9))
+    const wsKlimaContract = new ethers.Contract(wsKlima, wsKlimaABI, provider)
+    const fsKlimaContract = new ethers.Contract(fsKlima, wsKlimaABI, provider)
+    var baseBalance = await sKlimaContract.balanceOf(tempAddress) / (Math.pow(10, 9))
+    const wstemp = await wsKlimaContract.balanceOf(tempAddress) 
+    const wBaseBalance = await wsKlimaContract.wKLIMATosKLIMA(wstemp) / (Math.pow(10, 9))
+    console.log("ws base "+wBaseBalance)
+    //const fstemp = await fsKlimaContract.balanceOf(tempAddress) 
+    //const fsBaseBalance = await fsKlimaContract.fsKLIMA5TosKLIMA(fstemp) / (Math.pow(10, 9))
+    baseBalance = baseBalance + wBaseBalance
+    let tempTokens = []
+    if (baseBalance > 0) {
+      tempTokens[0] = true 
+    }
+    if (wBaseBalance > 0) {
+      tempTokens[1] = true 
+    }
+    setTokens(tempTokens)
+
     let arrBalances = Array() ; 
       arrBalances[0] = baseBalance.toFixed(2)
       
@@ -160,7 +181,7 @@ function App() {
       <h1>Klima Incoom </h1>
       {connectBtn}
       <SearchBar connectedWallet={address} showConnectedMeta={showConnectedAcc} connectWalletManual={connectWalletManual}/>
-      <MainStats APY={fetchedStakingAPY} fiveDayROI={fiveDayROI} balances={balances} dailyReward={dailyReward} epochReward={epochReward}/>
+      <MainStats APY={fetchedStakingAPY} fiveDayROI={fiveDayROI} balances={balances} dailyReward={dailyReward} epochReward={epochReward} tokens={tokens}/>
       <RebaseAleart time={rebaseTime}/>
       <Footer /> 
     </div>
